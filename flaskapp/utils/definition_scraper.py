@@ -36,13 +36,14 @@ def serialize_data():
                 except:
                     continue
 
-        print('finished one')
+        # Storing temporary serialized files in case there is a crash in the program
         with open('definitions' + str(num) + '.pickle', 'wb') as handle:
             pickle.dump(definitions, handle)
         num+=1
 
+    # The beefy boi that contains the full serialized dictionary
     with open('definitions.pickle', 'wb') as handle:
         pickle.dump(definitions, handle)
 
 if __name__ == '__main__':
-    get_data()
+    get_definitions()
