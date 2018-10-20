@@ -1,4 +1,7 @@
 import requests
+import pandas as pd
+import datetime as dt
+import matplotlib.pyplot as plt
 
 def related_articles (source = 'reuters', query = "market investors"):
 
@@ -17,3 +20,42 @@ def related_articles (source = 'reuters', query = "market investors"):
         del article["description"]
         del article["content"]
     return articles
+
+def stockPrice(ticker):
+    url = "https://api.iextrading.com/1.0/stock/" + ticker + "/batch?types=quote,news,chart&range=1y&last=10"
+    response = requests.get(url).json()["quote"]["latestPrice"]
+
+    return response
+
+def generateChart(ticker):
+    dates = []
+    prices = []
+    url = "https://api.iextrading.com/1.0/stock/" + ticker + "/chart/1y"
+    response = requests.get(url).json()
+    for entry in response:
+        del entry["open"]
+        del entry["high"]
+        del entry["low"]
+        del entry["volume"]
+        del entry["unadjustedVolume"]
+        del entry["change"]
+        del entry["changePercent"]
+        del entry["vwap"]
+        del entry["changeOverTime"]
+
+    for point in response:
+        dates.append(point["date"])
+        prices.append(point["close"])
+
+    x = [dt.datetime.strptime(d, '%Y-%m-%d').date() for d in dates]
+    y = prices
+    plt.plot(x, y)
+    plt.title("One Year Market Summary: " + ticker + " ($" + str(stockPrice(ticker)) + ")")
+    plt.show()
+
+if __name__ == "__main__":
+    generateChart("GOOGL")
+
+
+
+
