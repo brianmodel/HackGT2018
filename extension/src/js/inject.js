@@ -93,10 +93,10 @@ async function getOnPageParagraphs() {
             let $paragraph = $($articleText[i]);
             let verticalPosition = $paragraph.offset().top + ($paragraph.height() / 2) - $(window).scrollTop();
             if(verticalPosition >= 0 && verticalPosition <= $(window).height()) {
-                // $currentP.css('background', 'yellow');
+                // $paragraph.css('background', 'yellow');
                 extractAndDisplayKeywords(i);
             } else {
-                // $currentP.css('background', 'none');
+                // $paragraph.css('background', 'none');
                 removeKeywordsFromSidebar(i);
             }
         }
@@ -104,32 +104,38 @@ async function getOnPageParagraphs() {
 }
 async function extractAndDisplayKeywords(paragraphNumber) {
     let paragraphNumberString = paragraphNumber.toString();
-    if(paragraphNumberString in definitionsList && !definitionsList[paragraphNumberString].isActive) {
+    console.log("PARAGRAPH NUMBER: " + paragraphNumberString);
+    if(paragraphNumberString in definitionsList) {
         for(let i = 0; i < definitionsList[paragraphNumberString].length; i++) {
             let entry = definitionsList[paragraphNumberString][i];
-            $('#definitionsSideBar').append(sideBarTools.createDefinitionEntry(entry.term, entry.number, entry.definition));
+            if(!entry.isDisplayed) {
+                $('#definitionsSideBar').append(sideBarTools.createDefinitionEntry(entry.term, entry.number, entry.definition));
+                entry.isDisplayed = true;
+            }
+            
         }
-        definitionsList[paragraphNumberString].isActive = true;
     } else if (!(paragraphNumberString in definitionsList)) {
+        console.log("CALLING!! for paragraph " + paragraphNumberString);
+        console.log(definitionsList);
+        definitionsList[paragraphNumberString] = [];
         let $paragraph = $($articleText[paragraphNumber]);
         let paragraphText = $paragraph.text();
-        $.get(endpoints.main + endpoints.keywords, {
+        $.post(endpoints.main + endpoints.keywords, {
             paragraph: paragraphText
         }, (keywords, status) => {
             console.log(keywords);
-            definitionsList[paragraphNumberString] = [];
-
             for(let i = 0; i < keywords.length; i++) {
                 let keyword = keywords[i];
                 if(keyword.type === "definition") {
+                    console.log("KEYWORD: " + keyword.word);
                     definitionsList[paragraphNumberString].push({
                         term: keyword.word,
                         number: keywordCount++,
-                        definition: keyword.definition
+                        definition: keyword.definition,
+                        isDisplayed: false
                     });
                 }
             }
-            definitionsList[paragraphNumberString].isActive = false;
             extractAndDisplayKeywords(paragraphNumber);
         });
     }
@@ -137,12 +143,12 @@ async function extractAndDisplayKeywords(paragraphNumber) {
 }
 function removeKeywordsFromSidebar(paragraphNumber) {
     let paragraphNumberString = paragraphNumber.toString();
-    if (paragraphNumberString in definitionsList && definitionsList[paragraphNumberString].isActive) {
+    if (paragraphNumberString in definitionsList) {
         for (let i = 0; i < definitionsList[paragraphNumberString].length; i++) {
             let entry = definitionsList[paragraphNumberString][i];
             sideBarTools.removeDefinitionEntry(entry.number);
+            entry.isDisplayed = false;
         }
-        definitionsList[paragraphNumberString].isActive = false;
     }
 }
 
