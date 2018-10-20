@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
-from flaskapp.utils.summarizer import create_summary
-from flaskapp.utils.Parser import Parser
-from flaskapp.utils.stocks import get_analysis
+from utils.summarizer import create_summary
+from utils.Parser import Parser
+from utils.stocks import get_analysis
 app = Flask(__name__)
 
 parser = Parser()
@@ -39,7 +39,4 @@ def get_blackrock_analysis(ticker):
     return get_analysis(ticker)
 
 if __name__ == '__main__':
-    parser = Parser()
-    parser.set_article("dank memes")
-    a = parser.get_definitions()
-    print(a)
+    app.run(host='0.0.0.0', port=5000)
