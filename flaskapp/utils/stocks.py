@@ -22,7 +22,7 @@ def parse_stock_data():
             if is_first:
                 is_first = False
                 continue
-            stocks.append(row[0].lower())
+            stocks.append(row[0].upper())
 
         stocks = set(stocks)
 
@@ -35,7 +35,6 @@ def parse_stock_data():
         pickle.dump(definitions, handle)
 
 
-
 if __name__ == '__main__':
-    data = get_analysis('appl')
+    data = parse_stock_data()
     print(data)

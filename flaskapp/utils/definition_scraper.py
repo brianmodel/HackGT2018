@@ -1,4 +1,4 @@
-#Don't look here apart from get definitions. Everything else is parsing hell
+#Don't look here apart from get_definitions. Everything else is parsing hell
 
 import requests
 from bs4 import BeautifulSoup
@@ -74,4 +74,4 @@ def make_lowercase():
         pickle.dump(definitions, handle)
 
 if __name__ == '__main__':
-    get_definitions()
+    print(get_definitions().keys())
