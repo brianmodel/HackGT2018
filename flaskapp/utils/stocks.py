@@ -3,14 +3,12 @@ import json
 import csv
 import pickle
 import os
-
+from .blackrock import generateReport
 
 dirname = os.path.dirname(__file__)
 
 def get_analysis(ticker):
-    url = "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&positions=" + ticker + "~100"
-    response = json.dumps(requests.get(url).json())
-    return response
+    return generateReport(ticker)
 
 def is_ticker(ticker):
     with open(str(dirname)+'/data/stocks/stocks.pickle', 'rb') as stocks:

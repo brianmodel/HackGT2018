@@ -7,30 +7,7 @@ from dateutil import parser
 
 requests.packages.urllib3.disable_warnings()
 
-
-def get_analysis(tick):
-    ticker = tick
-
-
-    # if len(ticker) >= 5:
-    #     r = requests.get('http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=' + ticker + '&region=1&lang=en', verify=False)
-    #     try:
-    #         tickerSym = r.json()['ResultSet']['Result'][0]["symbol"]
-    #         tickerName = r.json()['ResultSet']['Result'][0]["name"]
-    #         print("it worked")
-    #     except:
-    #         print("Sorry, I couldn't find the company you were looking for, try asking for a different one.")
-    #         exit()
-    # else:
-    #     r = requests.get('http://d.yimg.com/autoc.finance.yahoo.com/autoc?query=' + ticker + '&region=1&lang=en', verify=False)
-    #     tickerSym = ticker
-    #     try:
-    #         tickerName = r.json()['ResultSet']['Result'][0]["name"]
-    #         print("it worked")
-    #     except:
-    #         print("Sorry, I couldn't find the ticker you were looking for, try asking for a different one.")
-    #         exit()
-
+def generateReport(ticker):
     r = requests.get('http://www.blackrock.com/tools/hackathon/performance?identifiers=' + ticker, verify=False)
 
     response = r.status_code

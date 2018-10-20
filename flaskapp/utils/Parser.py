@@ -18,15 +18,18 @@ class Parser:
         response = entity_linking(self.article)['documents']
         entities = response[0]['entities']
         for entity in entities:
+            
             name = entity['name']                
             index = entity['matches'][0]['offset']
             wiki = entity['wikipediaUrl']
+
             self.response.append({
                 "type": "azureEntity",
                 "word": name,
                 "wikipediaUrl": wiki,
                 "index": index
             })
+
             if get_ticker(name) != None:
                 self.response.append({
                 "type": "azureEntity",
