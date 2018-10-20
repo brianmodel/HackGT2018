@@ -44,6 +44,7 @@ body {
 #definitionsSideBar {
     height: 41%;
     line-height: 20px;
+    overflow-y: auto;
 }
 .definitionEntrySideBar {
     font-weight: 500;
