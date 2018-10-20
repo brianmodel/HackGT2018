@@ -10,26 +10,65 @@ function scrapeArticleText() {
 
 }
 
+let divElements = {
+    createPageContainer: function() {
+        let $container = $(document.createElement('div'));
+        $container.attr('id', 'leftBar');
+        return $container;
+    },
+    createSideBar: function() {
+        let $sideBar = $(document.createElement('div'));
+        $sideBar.attr('id', 'deconifySideBar');
+        let $definitionsDiv = this.createDefinitionsDiv();
+        let $extrasDiv = this.createExtrasDiv();
+        let $tabsDiv = this.createTabsDiv();
+        $sideBar.append($definitionsDiv, $extrasDiv, $tabsDiv);
+        return $sideBar;
+    },
+    createDefinitionsDiv: function() {
+        let $definitionsDiv = $(document.createElement('div'));
+        $definitionsDiv.attr('id', 'definitionsSideBar');
+        $definitionsDiv.addClass('sideBarSection');
+        $definitionsDiv.append($('<center><h3 class="titleSideBar">Definitions</h3></center>'));
+        return $definitionsDiv;
+    },
+    createExtrasDiv: function() {
+        let $extrasDiv = $(document.createElement('div'));
+        $extrasDiv.attr('id', 'extrasSideBar');
+        $extrasDiv.addClass('sideBarSection');
+        $extrasDiv.append($('<center><h3 class="titleSideBar">Extras</h3></center>'));
+        return $extrasDiv;
+    },
+    createTabsDiv: function () {
+        let $tabsDiv = $(document.createElement('div'));
+        $tabsDiv.attr('id', 'tabsSideBar');
+        $tabsDiv.addClass('sideBarSection');
+        return $tabsDiv;
+    },
+    createDefinitionEntry: function(term, number, definition) {
+        let $entry = $(document.createElement('p'));
+        $entry.addClass('definitionEntrySideBar');
+        let $term = $(document.createElement('span'));
+        $term.addClass('termSideBar');
+        $term.text(term);
+        let $tagNumber = $(document.createElement('span'));
+        $tagNumber.addClass('tagNumberSideBar');
+        $tagNumber.text("|" + number + "|");
+        $entry.append($term, ":&nbsp;", $tagNumber, "&nbsp;", definition);
+        return $entry;
+    }
+}
+
 function createSideBar() {
-    
-    let $container = $(document.createElement('div'));
+    let $container = divElements.createPageContainer();
     $container.html($(document.body).html());
-    $container.css('width', '65vw');
-    $container.css('padding', '10px');
     $(document.body).html("");
     $(document.body).append($container);
     $('.TwoColumnLayout_left').css('width', '100%');
-    let $sideBar = $(document.createElement('div'));
-    $sideBar.attr('id', 'deconifySideBar');
-    $sideBar.text("Brian Model, the legend. Brian Model, the legend. Brian Model, the legend. Brian Model, the legend. Brian Model, the legend.");
-    $sideBar.css('right', '0');
-    $sideBar.css('top', '0');
-    $sideBar.css('display', 'block');
-    $sideBar.css('width', '35vw');
-    $sideBar.css('height', '100vh');
-    $sideBar.css('background', 'cyan');
-    $sideBar.css('position', 'fixed');
+    let $sideBar = divElements.createSideBar();
+    
     $(document.body).append($sideBar);
+    $('#definitionsSideBar').append(divElements.createDefinitionEntry("Aggregate demand", 1, "the total demand for goods and services within a particular market"), divElements.createDefinitionEntry("GDP", 2, "short for gross domestic product"), divElements.createDefinitionEntry("Stock", 3, "a type of security that signifies ownership in a corporation"));
     console.log("Added!")
 }
 
