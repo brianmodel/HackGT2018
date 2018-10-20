@@ -41,8 +41,21 @@ body {
     margin-top: 10px;
     margin-bottom: 20px;
 }
+#mutableContainerSideBar {
+    display: block;
+    height: 97%;
+    width: 100%;
+}
+#summarySideBar {
+    height: 100%;
+    display: none;
+}
+#exploreSideBar {
+    height: 100%;
+    display: none;
+}
 #definitionsSideBar {
-    height: 41%;
+    height: 40%;
     line-height: 20px;
     overflow-y: auto;
 }
@@ -69,10 +82,41 @@ body {
 #extrasSideBar {
     padding-top: 20px;
     padding-bottom: 20px;
-    height: 56%;
+    height: 60%;
     border-top: 1px solid var(--notBlack);
 }
 #tabsSideBar {
     height: 3%;
+    width: 100%;
     border-top: 1px solid var(--notBlack);
+    padding: 0;
+    padding-top: 3px;
+    font-size: 11px;
+    line-height: 15px;
+}
+.tabSideBar {
+    cursor: pointer;
+    text-align: center;
+    display: inline-block;
+    width: 33%;
+    height: 100%;
+    padding: 2px;
+    border-left: 1px solid var(--notBlack);
+    border-right: 1px solid var(--notBlack);
+    background: #cc2a4177;
+}
+.tabSideBar:hover {
+    background: #cc2a4133;
+}
+#mainTabSideBar {
+    
+}
+#summaryTabSideBar {
+
+}
+#exploreTabSideBar {
+
+}
+.tabSideBar.chosenTabSideBar {
+    background: #cc2a41BB;
 }
