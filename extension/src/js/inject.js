@@ -1,22 +1,12 @@
-function scrapeArticleText() {
-    let $articleText = $('.StandardArticleBody_body').first();
-    $articleText = $articleText.find(' > p');
-    let articleString = "";
-    for(let i = 0; i < $articleText.length; i++) {
-        articleString += $articleText[i].innerText + "\n\n";
-    }
-    alert(articleString);
-    console.log(articleString);
-
-}
+let $articleText;
 
 let divElements = {
-    createPageContainer: function() {
+    createPageContainer: function () {
         let $container = $(document.createElement('div'));
         $container.attr('id', 'leftBar');
         return $container;
     },
-    createSideBar: function() {
+    createSideBar: function () {
         let $sideBar = $(document.createElement('div'));
         $sideBar.attr('id', 'deconifySideBar');
         let $definitionsDiv = this.createDefinitionsDiv();
@@ -25,14 +15,14 @@ let divElements = {
         $sideBar.append($definitionsDiv, $extrasDiv, $tabsDiv);
         return $sideBar;
     },
-    createDefinitionsDiv: function() {
+    createDefinitionsDiv: function () {
         let $definitionsDiv = $(document.createElement('div'));
         $definitionsDiv.attr('id', 'definitionsSideBar');
         $definitionsDiv.addClass('sideBarSection');
         $definitionsDiv.append($('<center><h3 class="titleSideBar">Definitions</h3></center>'));
         return $definitionsDiv;
     },
-    createExtrasDiv: function() {
+    createExtrasDiv: function () {
         let $extrasDiv = $(document.createElement('div'));
         $extrasDiv.attr('id', 'extrasSideBar');
         $extrasDiv.addClass('sideBarSection');
@@ -45,7 +35,7 @@ let divElements = {
         $tabsDiv.addClass('sideBarSection');
         return $tabsDiv;
     },
-    createDefinitionEntry: function(term, number, definition) {
+    createDefinitionEntry: function (term, number, definition) {
         let $entry = $(document.createElement('p'));
         $entry.addClass('definitionEntrySideBar');
         let $term = $(document.createElement('span'));
@@ -66,10 +56,49 @@ function createSideBar() {
     $(document.body).append($container);
     $('.TwoColumnLayout_left').css('width', '100%');
     let $sideBar = divElements.createSideBar();
-    
+
     $(document.body).append($sideBar);
-    $('#definitionsSideBar').append(divElements.createDefinitionEntry("Aggregate demand", 1, "the total demand for goods and services within a particular market"), divElements.createDefinitionEntry("GDP", 2, "short for gross domestic product"), divElements.createDefinitionEntry("Stock", 3, "a type of security that signifies ownership in a corporation"));
     console.log("Added!")
 }
 
-createSideBar();
+async function scrapeArticleParagraphs() {
+    $articleText = $('.StandardArticleBody_body').first();
+    $articleText = $articleText.find(' > p');
+    return $articleText;
+}
+function getSummary() {
+    let articleString = "";
+    for(let i = 0; i < $articleText.length; i++) {
+        articleString += $articleText[i].innerText + "\n\n";
+    }
+    alert(articleString);
+    console.log(articleString);
+
+}
+
+function getOnPageParagraphs() {
+    $(window).scroll(() => {
+        for (let i = 0; i < $articleText.length; i++) {
+            let $currentP = $($articleText[i]);
+            let verticalPosition = $currentP.offset().top + ($currentP.height() / 2) - $(window).scrollTop();
+            if(verticalPosition >= 0 && verticalPosition <= $(window).height()) {
+                // $currentP.css('background', 'yellow');
+            } else {
+                // $currentP.css('background', 'none');
+            }
+        }
+    });
+}
+
+
+
+
+
+
+async function run() {
+    createSideBar();
+    await scrapeArticleParagraphs();
+    getOnPageParagraphs();
+}
+
+run();
