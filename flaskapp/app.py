@@ -8,7 +8,7 @@ parser = Parser()
 
 @app.route('/summary')
 def get_summary():
-    article = request.headers['Article']
+    article = request.headers['article']
     summary = create_summary(article)
     return summary
 
@@ -30,7 +30,7 @@ def get_keywords():
         }
     }
     '''
-    article = request.headers['Article']
+    article = request.headers['article']
     parser.set_article(article)
     return jsonify(parser.get_keywords())
 
