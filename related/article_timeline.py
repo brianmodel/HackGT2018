@@ -47,14 +47,15 @@ def generateChart(ticker):
         dates.append(point["date"])
         prices.append(point["close"])
 
-    x = [dt.datetime.strptime(d, '%Y-%m-%d').date() for d in dates]
-    y = prices
-    plt.plot(x, y)
-    plt.title("One Year Market Summary: " + ticker + " ($" + str(stockPrice(ticker)) + ")")
-    plt.show()
+    return [dates, prices]
+    # x = [dt.datetime.strptime(d, '%Y-%m-%d').date() for d in dates]
+    # y = prices
+    # plt.plot(x, y)
+    # plt.title("One Year Market Summary: " + ticker + " ($" + str(stockPrice(ticker)) + ")")
+    # plt.show()
 
-if __name__ == "__main__":
-    generateChart("GOOGL")
+# if __name__ == "__main__":
+#     print(generateChart("GOOGL"))
 
 
 
