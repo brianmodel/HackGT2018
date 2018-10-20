@@ -12,7 +12,7 @@ class Parser:
     def get_keywords(self):
         self.dictonary_parse()
         self.azure_parse()
-        
+
         resp = self.response[:]
         self.response = []
         self.article = ""
@@ -48,7 +48,7 @@ class Parser:
         article_split = self.article.split(' ')
         words = []
         for key in self.definitions.keys():
-            if key in self.article.lower():
+            if key == self.article.lower():
                 words.append((key, self.article.lower().index(key)))
         for word in words:
             # self.response[word[0]] = {
