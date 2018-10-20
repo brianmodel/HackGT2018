@@ -2,6 +2,10 @@ import requests
 import json
 import csv
 import pickle
+import os
+
+
+dirname = os.path.dirname(__file__)
 
 def get_analysis(ticker):
     url = "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&positions=" + ticker + "~100"
@@ -9,7 +13,7 @@ def get_analysis(ticker):
     return response
 
 def is_ticker(ticker):
-    with open('data/stocks/stocks.pickle', 'rb') as stocks:
+    with open(dirname+'/data/stocks/stocks.pickle', 'rb') as stocks:
         stocks = pickle.load(stocks)
     return ticker in stocks
 

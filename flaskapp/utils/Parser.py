@@ -1,7 +1,6 @@
 from flaskapp.utils.definition_scraper import get_definitions
 from flaskapp.utils.stocks import is_ticker
 
-
 class Parser:
 
     def __init__(self):
@@ -10,6 +9,7 @@ class Parser:
         self.response = {}
 
     def get_keywords(self):
+        self.dictonary_parse()
         return self.response
 
     def azure_parse(self):

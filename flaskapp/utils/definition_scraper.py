@@ -3,13 +3,16 @@
 import requests
 from bs4 import BeautifulSoup
 import pickle
+import os
+
+dirname = os.path.dirname(__file__)
 
 def get_definitions():
     '''
     returns the dictionary of financial definitions
     :return:
     '''
-    with open('data/serialized/definitions.pickle', 'rb') as handle:
+    with open(dirname + '/data/serialized/definitions.pickle', 'rb') as handle:
         b = pickle.load(handle)
     return b
 
