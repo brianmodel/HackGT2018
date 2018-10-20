@@ -7,7 +7,7 @@ class Parser:
     def __init__(self):
         self.article = ""
         self.definitions = get_definitions()
-        self.response = {}
+        self.response = []
 
     def get_keywords(self):
         self.dictonary_parse()
@@ -20,19 +20,20 @@ class Parser:
             name = entity['name']                
             index = entity['matches'][0]['offset']
             wiki = entity['wikipediaUrl']
-            self.response[name] = {
+            self.response.append({
                 "type": "azureEntity",
+                "word": name,
                 "wikipediaUrl": wiki,
                 "index": index
-            }
+            })
             if get_ticker(name) != None:
-                self.response[name] = {
+                self.response.append({
                 "type": "azureEntity",
+                "word": name,
                 "wikipediaUrl": wiki,
                 "index": index,
                 "ticker": get_ticker(name)
-            }
-
+            })
 
     def dictonary_parse(self):
         article_split = self.article.split(' ')
@@ -41,11 +42,17 @@ class Parser:
             if key in self.article.lower():
                 words.append((key, self.article.lower().index(key)))
         for word in words:
-            self.response[word[0]] = {
+            # self.response[word[0]] = {
+            #     "type": "definition",
+            #     "definition": self.definitions[word[0]],
+            #     "index": word[1],
+                
+            self.response.append({
                 "type": "definition",
+                "word": word[0],
                 "definition": self.definitions[word[0]],
-                "index": word[1],
-            }
+                "index": word[1]
+            })
 
         for i in range(len(article_split)):
             if is_ticker(article_split[i]):
@@ -56,6 +63,13 @@ class Parser:
                     "index": i,
                     "analysis": 'BLACKROCK ANALYSIS'
                 }
+
+                self.response.append({
+                    "type": "ticker",
+                    "ticker": ticker,
+                    "index": i,
+                    "analysis": 'BLACKROCK ANALYSIS'
+                })
 
     def set_article(self, article):
         self.article = article
