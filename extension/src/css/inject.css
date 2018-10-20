@@ -1,0 +1,78 @@
+:root {
+    --niceRed: #cc2a41;
+    --offWhite: #fafafa;
+    --notBlack: #22272a;
+    --fadedText: #666;
+}
+
+body {
+    width: 500px;
+}
+
+#leftBar {
+    background: white;
+    box-sizing: border-box;
+    width: 70vw;
+    padding: 10px;
+}
+
+#deconifySideBar {
+    box-sizing: border-box;
+    right: 0;
+    top: 0;
+    display: block;
+    width: 29vw;
+    height: 100vh;
+    padding: 10px;
+    background: var(--offWhite);
+    position: fixed;
+    border-left: 3px solid var(--notBlack);
+
+    font-family: "Menlo", "Meslo LG", monospace;
+    font-size: 16px;
+    color: var(--notBlack);
+}
+.sideBarSection {
+    display: block;
+    padding: 10px;
+}
+.titleSideBar {
+    font-weight: 700;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+#definitionsSideBar {
+    height: 41%;
+    line-height: 20px;
+    overflow-y: auto;
+}
+.definitionEntrySideBar {
+    font-weight: 500;
+    font-size: 14px;
+    margin: 10px 0;
+}
+.termSideBar {
+    color: var(--niceRed);
+    text-decoration: underline;
+}
+.tagNumberSideBar {
+    color: var(--fadedText);
+    letter-spacing: 0px;
+    /* font-style: italic; */
+}
+.tagNumberSideBar:hover {
+    background-color: yellow;
+}
+.correspondingNumberSideBar {
+
+}
+#extrasSideBar {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    height: 56%;
+    border-top: 1px solid var(--notBlack);
+}
+#tabsSideBar {
+    height: 3%;
+    border-top: 1px solid var(--notBlack);
+}
