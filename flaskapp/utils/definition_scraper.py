@@ -9,7 +9,7 @@ def get_definitions():
     returns the dictionary of financial definitions
     :return:
     '''
-    with open('serialized/definitions.pickle', 'rb') as handle:
+    with open('data/serialized/definitions.pickle', 'rb') as handle:
         b = pickle.load(handle)
     return b
 
@@ -63,15 +63,15 @@ def edit_dictionary():
         definition = definitions[i[1]]
         definitions[first] = definition
 
-    with open('serialized/definitions.pickle', 'wb') as handle:
+    with open('data/serialized/definitions.pickle', 'wb') as handle:
         pickle.dump(definitions, handle)
 
 def make_lowercase():
     definitions = get_definitions()
     definitions = {k.lower(): v for k, v in definitions.items()}
 
-    with open('serialized/definitions.pickle', 'wb') as handle:
+    with open('data/serialized/definitions.pickle', 'wb') as handle:
         pickle.dump(definitions, handle)
 
 if __name__ == '__main__':
-    make_lowercase()
+    get_definitions()

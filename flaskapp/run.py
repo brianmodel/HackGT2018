@@ -1,7 +1,7 @@
 from flask import Flask, request
 from flaskapp.utils.summarizer import create_summary
 from flaskapp.utils.Parser import Parser
-from flaskapp.utils.blackrock import get_analysis
+from flaskapp.utils.stocks import get_analysis
 app = Flask(__name__)
 
 parser = Parser()

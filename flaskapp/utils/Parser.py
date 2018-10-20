@@ -1,4 +1,5 @@
 from flaskapp.utils.definition_scraper import get_definitions
+from flaskapp.utils.stocks import is_ticker
 
 class Parser:
 
@@ -20,7 +21,16 @@ class Parser:
                 word = article_split[i]
                 self.response[word] = {
                     "type": "definition",
+                    "definition": self.definitions[word],
                     "location": i
+                }
+            elif is_ticker(article_split[i]):
+                ticker = article_split[i]
+                self.response[ticker] = {
+                    "type": "ticker",
+                    "ticker": ticker,
+                    "location": i,
+                    "analysis": 'BLACKROCK ANALYSIS'
                 }
 
     def set_article(self, article):
@@ -34,7 +44,7 @@ class Parser:
 
 if __name__ == '__main__':
     parser = Parser()
-    parser.set_article("djia fell lots today")
+    parser.set_article("the djia fell lots today. AMZN is doing great!")
     parser.dictonary_parse()
     print(parser.response)
 
