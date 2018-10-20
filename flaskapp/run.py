@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from flaskapp.utils.summarizer import create_summary
 from flaskapp.utils.Parser import Parser
 from flaskapp.utils.stocks import get_analysis
@@ -32,8 +32,14 @@ def get_keywords():
     '''
     article = request.headers['Article']
     parser.set_article(article)
-    return parser.get_keywords()
+    return jsonify(parser.get_keywords())
 
 @app.route('/blackrock/<ticker>')
 def get_blackrock_analysis(ticker):
     return get_analysis(ticker)
+
+if __name__ == '__main__':
+    parser = Parser()
+    parser.set_article("dank memes")
+    a = parser.get_definitions()
+    print(a)
