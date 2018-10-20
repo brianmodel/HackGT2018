@@ -1,0 +1,17 @@
+{
+    "manifest_version": 2,
+    "name": "dEconify",
+    "version": "1.0",
+    "description": "De jargonify finance articles for the general public and add some other stuff.",
+    "permissions": [
+        "*://*.reuters.com/article/"
+    ],
+    "browser_action": {},
+    "content_scripts": [
+        {
+            "matches": ["*://*.reuters.com/article/*"],
+            "css": ["src/css/inject.css"],
+            "js": ["src/js/jquery.3.3.1.min.js", "src/js/inject.js"]
+        }
+    ]
+}
