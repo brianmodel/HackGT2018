@@ -4,6 +4,8 @@ from flaskapp.utils.Parser import Parser
 from flaskapp.utils.blackrock import get_analysis
 app = Flask(__name__)
 
+parser = Parser()
+
 @app.route('/summary')
 def get_summary():
     article = request.headers['Article']
@@ -29,7 +31,7 @@ def get_keywords():
     }
     '''
     article = request.headers['Article']
-    parser = Parser(article)
+    parser.set_article(article)
     return parser.get_keywords()
 
 @app.route('/blackrock/<ticker>')

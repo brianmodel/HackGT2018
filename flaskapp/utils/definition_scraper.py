@@ -1,3 +1,5 @@
+#Don't look here apart from get definitions. Everything else is parsing hell
+
 import requests
 from bs4 import BeautifulSoup
 import pickle
@@ -45,5 +47,31 @@ def serialize_data():
     with open('definitions.pickle', 'wb') as handle:
         pickle.dump(definitions, handle)
 
+def edit_dictionary():
+
+    change = []
+    definitions = get_definitions()
+    for key in definitions.keys():
+        if "(" in key:
+            words = key.split('(')
+            other = words[1][:-1]
+            change.append((other, key))
+
+    for i in change:
+        definitions[i[0]] = definitions[i[1]]
+        first = i[1].split('(')[:-1][0][:-1]
+        definition = definitions[i[1]]
+        definitions[first] = definition
+
+    with open('serialized/definitions.pickle', 'wb') as handle:
+        pickle.dump(definitions, handle)
+
+def make_lowercase():
+    definitions = get_definitions()
+    definitions = {k.lower(): v for k, v in definitions.items()}
+
+    with open('serialized/definitions.pickle', 'wb') as handle:
+        pickle.dump(definitions, handle)
+
 if __name__ == '__main__':
-    get_definitions()
+    make_lowercase()
