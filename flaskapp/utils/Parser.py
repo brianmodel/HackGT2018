@@ -1,6 +1,6 @@
-from definition_scraper import get_definitions
-from stocks import is_ticker, get_ticker
-from azure_util import entity_linking, key_phrases, sentiment_analysis
+from .definition_scraper import get_definitions
+from .stocks import is_ticker, get_ticker
+from .azure_util import entity_linking, key_phrases, sentiment_analysis
 
 class Parser:
 
@@ -30,7 +30,7 @@ class Parser:
                 "type": "azureEntity",
                 "wikipediaUrl": wiki,
                 "index": index,
-                "ticker"L get_ticker(name)
+                "ticker": get_ticker(name)
             }
 
 
