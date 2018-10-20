@@ -30,7 +30,7 @@ def get_keywords():
         }
     }
     '''
-    article = request.headers['article']
+    article = request.headers['paragraph']
     parser.set_article(article)
     return jsonify(parser.get_keywords())
 
