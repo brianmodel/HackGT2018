@@ -12,23 +12,20 @@ class Parser:
     def get_keywords(self):
         self.dictonary_parse()
         self.azure_parse()
-        return self.response
+        
+        resp = self.response[:]
+        self.response = []
+        self.article = ""
+        return resp
 
     def azure_parse(self):
         response = entity_linking(self.article)['documents']
         entities = response[0]['entities']
         for entity in entities:
-            
+
             name = entity['name']                
             index = entity['matches'][0]['offset']
             wiki = entity['wikipediaUrl']
-
-            self.response.append({
-                "type": "azureEntity",
-                "word": name,
-                "wikipediaUrl": wiki,
-                "index": index
-            })
 
             if get_ticker(name) != None:
                 self.response.append({
@@ -38,6 +35,14 @@ class Parser:
                 "index": index,
                 "ticker": get_ticker(name)
             })
+
+            else:
+                self.response.append({
+                    "type": "azureEntity",
+                    "word": name,
+                    "wikipediaUrl": wiki,
+                    "index": index
+                })
 
     def dictonary_parse(self):
         article_split = self.article.split(' ')
