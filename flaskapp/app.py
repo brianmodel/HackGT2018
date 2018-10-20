@@ -6,13 +6,13 @@ app = Flask(__name__)
 
 parser = Parser()
 
-@app.route('/summary')
+@app.route('/summary', methods = ['POST'])
 def get_summary():
-    article = request.headers['article']
+    article = request.data['article']
     summary = create_summary(article)
     return summary
 
-@app.route('/keywords')
+@app.route('/keywords', methods = ['POST'])
 def get_keywords():
     '''
 
@@ -30,7 +30,7 @@ def get_keywords():
         }
     }
     '''
-    article = request.headers['paragraph']
+    article = request.data['paragraph']
     parser.set_article(article)
     return jsonify(parser.get_keywords())
 

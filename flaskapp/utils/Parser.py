@@ -11,6 +11,7 @@ class Parser:
 
     def get_keywords(self):
         self.dictonary_parse()
+        self.azure_parse()
         return self.response
 
     def azure_parse(self):
