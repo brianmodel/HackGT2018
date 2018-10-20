@@ -1,8 +1,11 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from utils.summarizer import create_summary
 from utils.Parser import Parser
 from utils.stocks import get_analysis
+
 app = Flask(__name__)
+CORS(app)
 
 parser = Parser()
 
