@@ -116,6 +116,7 @@ async function extractAndDisplayKeywords(paragraphNumber) {
         $.get(endpoints.main + endpoints.keywords, {
             paragraph: paragraphText
         }, (keywords, status) => {
+            console.log(keywords);
             definitionsList[paragraphNumberString] = [];
 
             for(let i = 0; i < keywords.length; i++) {
