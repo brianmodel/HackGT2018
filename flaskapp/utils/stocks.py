@@ -6,7 +6,6 @@ import pickle
 def get_analysis(ticker):
     url = "https://www.blackrock.com/tools/hackathon/portfolio-analysis?calculateExposures=true&calculatePerformance=true&positions=" + ticker + "~100"
     response = json.dumps(requests.get(url).json())
-    print(response)
     return response
 
 def is_ticker(ticker):
@@ -38,5 +37,5 @@ def parse_stock_data():
 
 
 if __name__ == '__main__':
-    data = parse_stock_data()
+    data = get_analysis('appl')
     print(data)

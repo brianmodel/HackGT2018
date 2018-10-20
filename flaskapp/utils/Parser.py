@@ -9,7 +9,7 @@ class Parser:
         self.response = {}
 
     def get_keywords(self):
-        return
+        return self.response
 
     def azure_parse(self):
         return
@@ -44,7 +44,7 @@ class Parser:
 
 if __name__ == '__main__':
     parser = Parser()
-    parser.set_article("the djia fell lots today. AMZN is doing great!")
+    parser.set_article("the djia fell lots today. AMZN is doing great! And how are we all doing. I am fansaotiaidb aosidja awh o")
     parser.dictonary_parse()
     print(parser.response)
 
