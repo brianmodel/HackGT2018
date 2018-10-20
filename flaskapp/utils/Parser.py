@@ -48,7 +48,7 @@ class Parser:
         article_split = self.article.split(' ')
         words = []
         for key in self.definitions.keys():
-            if key == self.article.lower():
+            if " "+key+" " in self.article.lower() or " "+key+"." in self.article.lower():
                 words.append((key, self.article.lower().index(key)))
         for word in words:
             # self.response[word[0]] = {
