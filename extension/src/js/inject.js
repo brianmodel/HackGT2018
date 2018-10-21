@@ -11,7 +11,8 @@ let endpoints = {
     ticker: {
         stockPrice: 'stockprice/',
         chartData: 'chartdata/',
-        blackrock: 'blackrock/'
+        blackrock: 'blackrock/',
+        sentiment: 'sentiment'
     }
 }
 let sideBarTools = {
@@ -145,6 +146,8 @@ let sideBarTools = {
         let tickerInfo = stockTickers[ticker];
         let idOfTickerCanvas = ticker + 'ChartSideBar';
 
+        let graphColor = (stockTickers[ticker].sentiment > 0) ? '#cc2a41' : '#317256';
+
         let ctx = document.getElementById(idOfTickerCanvas).getContext('2d');
 
         let data = [];
@@ -162,8 +165,8 @@ let sideBarTools = {
                     data: data,
                     pointRadius: 0,
                     lineTension: 0,
-                    borderColor: '#317256',
-                    backgroundColor: '#52bf9088'
+                    borderColor: graphColor,
+                    backgroundColor: graphColor + '88'
                 }]
             },
             options: {
@@ -362,6 +365,12 @@ function extractTickersInParagraph(paragraphNumber) {
     Object.keys(stockTickers).forEach(ticker => {
         if(paragraphText.includes(ticker)) {
             // alert(ticker + "is in paragraph " + paragraphNumber + "!");
+            $.post(endpoints.main + endpoints.ticker.sentiment, {
+                paragraph: paragraphText
+            }, (sentiment, status) => {
+                console.log("SENTIMENT:" + sentiment);
+                stockTickers[ticker].sentiment = sentiment;
+            });
             console.log("FOUND TICKER:" + ticker);
             if (!stockTickers[ticker].added) {
                 $('#extrasSideBar').append(sideBarTools.createTickerEntry(ticker));
