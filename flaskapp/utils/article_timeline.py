@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
-import datetime as dt
-import matplotlib.pyplot as plt
+# import datetime as dt
+# import matplotlib.pyplot as plt
 
 def related_articles (source = 'reuters', query = "market investors"):
 
@@ -51,7 +51,9 @@ def generateChart(ticker):
 
 
 if __name__ == "__main__":
-    print(generateChart("GOOGL"))
+    # print(generateChart("GOOGL"))
+    print(stockPrice('AMZN'))
+    # print(related_articles())
 
 
 

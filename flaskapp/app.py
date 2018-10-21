@@ -4,6 +4,7 @@ from utils.summarizer import create_summary
 from utils.Parser import Parser
 from utils.stocks import get_analysis
 from utils.sentiment import analyze_sentiment
+from utils.article_timeline import related_articles, stockPrice, generateChart 
 
 app = Flask(__name__)
 CORS(app)
@@ -44,8 +45,20 @@ def get_blackrock_analysis(ticker):
 
 @app.route('/sentiment', methods = ['POST'])
 def get_sentiment():
-    
-    analyze_sentiment()
+    paragraph = request.form['paragraph']
+    return analyze_sentiment(paragraph)
+
+@app.route('/related')
+def get_related_articles():
+    return get_related_articles()
+
+@app.route('/stockprice/<ticker>')
+def get_stock_price(ticker):
+    return stockPrice(ticker)
+
+@app.route('/chartdata/<ticker>')
+def get_chart_data(ticker):
+    return generateChart(ticker)
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)
