@@ -50,7 +50,7 @@ def get_sentiment():
 
 @app.route('/related')
 def get_related_articles():
-    return get_related_articles()
+    return related_articles()
 
 @app.route('/stockprice/<ticker>')
 def get_stock_price(ticker):
