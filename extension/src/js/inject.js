@@ -365,12 +365,13 @@ function extractTickersInParagraph(paragraphNumber) {
     Object.keys(stockTickers).forEach(ticker => {
         if(paragraphText.includes(ticker)) {
             // alert(ticker + "is in paragraph " + paragraphNumber + "!");
-            $.post(endpoints.main + endpoints.ticker.sentiment, {
-                paragraph: paragraphText
-            }, (sentiment, status) => {
-                console.log("SENTIMENT:" + sentiment);
-                stockTickers[ticker].sentiment = sentiment;
-            });
+            // $.post(endpoints.main + endpoints.ticker.sentiment, {
+            //     paragraph: paragraphText
+            // }, (sentiment, status) => {
+            //     console.log("SENTIMENT:" + sentiment);
+            //     stockTickers[ticker].sentiment = sentiment;
+            // });
+            stockTickers[ticker].sentiment = 1;
             console.log("FOUND TICKER:" + ticker);
             if (!stockTickers[ticker].added) {
                 $('#extrasSideBar').append(sideBarTools.createTickerEntry(ticker));
