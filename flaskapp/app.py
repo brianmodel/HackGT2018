@@ -3,6 +3,7 @@ from flask_cors import CORS
 from utils.summarizer import create_summary
 from utils.Parser import Parser
 from utils.stocks import get_analysis
+from utils.sentiment import analyze_sentiment
 
 app = Flask(__name__)
 CORS(app)
@@ -40,6 +41,11 @@ def get_keywords():
 @app.route('/blackrock/<ticker>')
 def get_blackrock_analysis(ticker):
     return get_analysis(ticker)
+
+@app.route('/sentiment', methods = ['POST'])
+def get_sentiment():
+    
+    analyze_sentiment()
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)

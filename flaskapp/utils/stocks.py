@@ -19,6 +19,12 @@ def get_ticker(name):
     name = name.lower()
     with open(str(dirname)+'/data/stocks/tickers.pickle', 'rb') as stocks:
         tickers = pickle.load(stocks)
+    tickers['netflix'] = 'NFLX'
+    tickers['google'] = 'GOOG'
+    tickers['microsoft'] = 'MSFT'
+    tickers['amazon.com'] = "AMZN"
+    tickers['amazon'] = "AMZN"
+
     if name not in tickers:
         return None
     return tickers[name]
@@ -42,7 +48,7 @@ def parse_stock_tickers():
         return stocks
 
 def parse_company_and_ticker():
-    with open(dirname+"/data/stocks/companylist.csv") as stocks:
+    with open("/Users/brianmodel/Desktop/HackGT2018/flaskapp/utils/data/stocks/companylist.csv", 'r') as stocks:
         csv_reader = csv.reader(stocks, delimiter=',')
         is_first = True
         stocks = {}
@@ -51,20 +57,17 @@ def parse_company_and_ticker():
                 is_first=False
                 continue
             company_name = row[1]
-            if len(company_name.split('.')) > 1:
-                stocks[company_name.split('.')[0].lower()] = row[0]
-            elif len(company_name.split(',')) > 1:
-                stocks[company_name.split(',')[0].lower()] = row[0]
-            else:
-                stocks[company_name.lower()] = row[0]
+            stocks[company_name.lower()] = row[0]
 
-        with open(dirname+'/data/stocks/tickers.pickle', 'wb') as handle:
+        with open(dirname+'/Users/brianmodel/Desktop/HackGT2018/flaskapp/utils/data/stocks/tickers.pickle', 'wb') as handle:
             pickle.dump(stocks, handle)
 
     return stocks
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # ticker = get_ticker('amazon')
     # print(ticker)
-    print(dirname)
-    is_ticker('AMZN')
+    # print(dirname)
+    # is_ticker('AMZN')
+    # parse_company_and_ticker()
+    
