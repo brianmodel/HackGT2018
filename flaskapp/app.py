@@ -46,7 +46,8 @@ def get_blackrock_analysis(ticker):
 @app.route('/sentiment', methods = ['POST'])
 def get_sentiment():
     paragraph = request.form['paragraph']
-    return analyze_sentiment(paragraph)
+    sentiment = float(analyze_sentiment(paragraph)) >= .5
+    return jsonify(int(sentiment))
 
 @app.route('/related')
 def get_related_articles():
