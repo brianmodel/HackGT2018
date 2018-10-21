@@ -155,6 +155,11 @@ async function scrapeArticleParagraphs() {
     $articleText = $articleText.find(' > p');
     return $articleText;
 }
+async function scrapeStockTickers() {
+    let stockTickers = $('.StockChart_button').text().split(/\..{1}/);
+    stockTickers.pop();
+    console.log(stockTickers);
+}
 function getSummary() {
     let articleString = "";
     for(let i = 0; i < $articleText.length; i++) {
@@ -244,6 +249,7 @@ function removeKeywordsFromSidebar(paragraphNumber) {
 async function run() {
     createSideBar();
     await scrapeArticleParagraphs();
+    await scrapeStockTickers();
     getOnPageParagraphs();
     getSummary();
 }
