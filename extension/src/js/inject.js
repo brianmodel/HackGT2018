@@ -1,11 +1,18 @@
 let $articleText;
 let definitionsList = {};
+let stockTickers = {};
 let keywordCount = 0;
 
 let endpoints = {
-    main: 'http://localhost:5000',
-    summary: '/summary',
-    keywords: '/keywords'
+    main: 'http://localhost:5000/',
+    summary: 'summary',
+    keywords: 'keywords',
+    related: 'related',
+    ticker: {
+        stockPrice: 'stockprice/',
+        chartData: 'chartdata/',
+        blackrock: 'blackrock/'
+    }
 }
 let sideBarTools = {
     createPageContainer: function () {
@@ -104,6 +111,85 @@ let sideBarTools = {
     },
     removeDefinitionEntry: function(number) {
         $('p[entryNumber="' + number + '"]').remove();
+    },
+    createTickerEntry: function(ticker) {
+        let tickerInfo = stockTickers[ticker];
+        let $tickerEntry = $(document.createElement('div'));
+        $tickerEntry.attr('tickerID', ticker);
+        $tickerEntry.addClass('tickerEntrySideBar');
+        let $titleAndPrice = $('<h3>' + ticker + '<span> &mdash; $' + tickerInfo.stockPrice + '</span></h3>');
+        let $stockChartCanvas = this.createStockChartCanvas(ticker);
+        let $analysisText = $('<p>' + tickerInfo.analysis + '</p>');
+
+        $tickerEntry.append($titleAndPrice, $stockChartCanvas, $analysisText);
+        $(() => this.populateStockChart(ticker));
+        console.log(stockTickers);
+        
+
+        return $tickerEntry;
+    },
+    removeTickerEntry: function(ticker) {
+        let $tickerEntry = $('div[tickerID="' + ticker + '"]');
+        $tickerEntry.remove();
+        stockTickers[ticker].added = false;
+    },
+    createStockChartCanvas: function(ticker) {
+        let $stockCanvas = $(document.createElement('canvas'));
+        $stockCanvas.attr('id', ticker + 'ChartSideBar');
+        $stockCanvas.width(200);
+        $stockCanvas.css('margin-bottom', '5px');
+
+        return $stockCanvas
+    },
+    populateStockChart: function(ticker) {
+        let tickerInfo = stockTickers[ticker];
+        let idOfTickerCanvas = ticker + 'ChartSideBar';
+
+        let ctx = document.getElementById(idOfTickerCanvas).getContext('2d');
+
+        let data = [];
+        for (let i = 0; i < tickerInfo.chartData.dates.length; i++) {
+            data.push({
+                x: moment(tickerInfo.chartData.dates[i]),
+                y: tickerInfo.chartData.prices[i]
+            })
+        }
+
+        return new Chart(ctx, {
+            type: 'line',
+            data: {
+                datasets: [{
+                    data: data,
+                    pointRadius: 0,
+                    lineTension: 0,
+                    borderColor: '#317256',
+                    backgroundColor: '#52bf9088'
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'One Year Market Summary for ' + ticker + ' stock'
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        distribution: 'series',
+                        time: {
+                            unit: 'day'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 30
+                        }
+
+                    }]
+                }
+            }
+        });
     }
 }
 
@@ -155,10 +241,35 @@ async function scrapeArticleParagraphs() {
     $articleText = $articleText.find(' > p');
     return $articleText;
 }
-async function scrapeStockTickers() {
-    let stockTickers = $('.StockChart_button').text().split(/\..{1}/);
-    stockTickers.pop();
-    console.log(stockTickers);
+async function scrapeStockTickersAndGetInfo() {
+    let stockTickersList = $('.StockChart_button').text().split(/\..{1}/);
+    stockTickersList.pop();
+
+    console.log(stockTickersList);
+
+    for(let i = 0; i < stockTickersList.length; i++) {
+        let stockTicker = stockTickersList[i];
+        stockTickers[stockTicker] = {};
+        
+        $.get(endpoints.main + endpoints.ticker.stockPrice + stockTicker, {}, (stockPrice, status) => {
+            console.log("STOCK PRICE for " + stockTicker + ": " + stockPrice);
+            stockTickers[stockTicker].stockPrice = stockPrice;
+        });
+        $.get(endpoints.main + endpoints.ticker.chartData + stockTicker, {}, (chartData, status) => {
+            console.log("CHART DATA for " + stockTicker + ": " + chartData);
+            stockTickers[stockTicker].chartData = {
+                dates: chartData[0],
+                prices: chartData[1]
+            };
+        });
+        $.get(endpoints.main + endpoints.ticker.blackrock + stockTicker, {}, (analysis, status) => {
+            console.log("BLACK ROCK for " + stockTicker + ": " + analysis);
+            stockTickers[stockTicker].analysis = analysis;
+        });
+
+        console.log(stockTickers[stockTicker]);
+    }
+
 }
 function getSummary() {
     let articleString = "";
@@ -184,13 +295,16 @@ async function getOnPageParagraphs() {
             if(verticalPosition >= 0 && verticalPosition <= $(window).height()) {
                 // $paragraph.css('background', 'yellow');
                 extractAndDisplayKeywords(i);
+                extractTickersInParagraph(i);
             } else {
                 // $paragraph.css('background', 'none');
                 removeKeywordsFromSidebar(i);
+                // removeTickersFromSidebar(i);
             }
         }
     });
 }
+
 async function extractAndDisplayKeywords(paragraphNumber) {
     let paragraphNumberString = paragraphNumber.toString();
     console.log("PARAGRAPH NUMBER: " + paragraphNumberString);
@@ -204,8 +318,8 @@ async function extractAndDisplayKeywords(paragraphNumber) {
             
         }
     } else if (!(paragraphNumberString in definitionsList)) {
-        console.log("CALLING!! for paragraph " + paragraphNumberString);
-        console.log(definitionsList);
+        // console.log("CALLING!! for paragraph " + paragraphNumberString);
+        // console.log(definitionsList);
         definitionsList[paragraphNumberString] = [];
         let $paragraph = $($articleText[paragraphNumber]);
         let paragraphText = $paragraph.text();
@@ -241,6 +355,36 @@ function removeKeywordsFromSidebar(paragraphNumber) {
     }
 }
 
+function extractTickersInParagraph(paragraphNumber) {
+    let $paragraph = $($articleText[paragraphNumber]);
+    let paragraphText = $paragraph.text();
+
+    Object.keys(stockTickers).forEach(ticker => {
+        if(paragraphText.includes(ticker)) {
+            // alert(ticker + "is in paragraph " + paragraphNumber + "!");
+            console.log("FOUND TICKER:" + ticker);
+            if (!stockTickers[ticker].added) {
+                $('#extrasSideBar').append(sideBarTools.createTickerEntry(ticker));
+                stockTickers[ticker].added = true;
+            }
+        }
+    });
+}
+function removeTickersFromSidebar(paragraphNumber) {
+    let $paragraph = $($articleText[paragraphNumber]);
+    let paragraphText = $paragraph.text();
+    Object.keys(stockTickers).forEach(ticker => {
+        if (paragraphText.includes(ticker)) {
+            // alert(ticker + "is in paragraph " + paragraphNumber + "!");
+            if (stockTickers[ticker].added) {
+                sideBarTools.removeDefinitionEntry(ticker);
+                stockTickers[ticker].added = false;
+            }
+        }
+    });
+}
+
+
 
 
 
@@ -249,7 +393,7 @@ function removeKeywordsFromSidebar(paragraphNumber) {
 async function run() {
     createSideBar();
     await scrapeArticleParagraphs();
-    await scrapeStockTickers();
+    await scrapeStockTickersAndGetInfo();
     getOnPageParagraphs();
     getSummary();
 }

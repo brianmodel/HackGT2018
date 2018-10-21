@@ -3,6 +3,9 @@
     --offWhite: #fafafa;
     --notBlack: #22272a;
     --fadedText: #666;
+    --borderBlue: #01579B;
+    --backgroundBlue: #B3E5FC88;
+    --positiveGreen: #58d082;
 }
 
 body {
@@ -91,6 +94,29 @@ body {
     height: 60%;
     border-top: 1px solid var(--notBlack);
 }
+.tickerEntrySideBar {
+    position: relative;
+    display: block;
+    width: 100%;
+    border: 1px solid var(--borderBlue);
+    background: var(--backgroundBlue);
+    padding: 5px;
+    color: var(--notBlack);
+    margin-bottom: 5px;
+}
+.tickerEntrySideBar h3 {
+    font-weight: 700;
+    margin-bottom: 1px;
+}
+.tickerEntrySideBar h3 span {
+    font-weight: 300;
+    color: var(--fadedText);
+    font-style: italic;
+}
+.tickerEntrySideBar p {
+    line-height: 20px;
+}
+
 #tabsSideBar {
     height: 3%;
     width: 100%;
