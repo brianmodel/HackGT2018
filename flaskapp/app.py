@@ -50,15 +50,15 @@ def get_sentiment():
 
 @app.route('/related')
 def get_related_articles():
-    return related_articles()
+    return jsonify(related_articles())
 
 @app.route('/stockprice/<ticker>')
 def get_stock_price(ticker):
-    return stockPrice(ticker)
+    return jsonify(stockPrice(ticker))
 
 @app.route('/chartdata/<ticker>')
 def get_chart_data(ticker):
-    return generateChart(ticker)
+    return jsonify(generateChart(ticker))
 
 if __name__ == '__main__':
     app.run(host='localhost', port=5000)
