@@ -119,7 +119,7 @@ function createSideBar() {
     console.log("Added!")
 }
 
-function showMainTab(e) {
+function showMainTab() {
     $('#summarySideBar').hide();
     $('#exploreSideBar').hide();
     $('#definitionsSideBar').show();
@@ -134,6 +134,7 @@ function showSummaryTab() {
     $('#definitionsSideBar').hide();
     $('#extrasSideBar').hide();
     $('#summarySideBar').show();
+
     $('#mainTabSideBar').removeClass('chosenTabSideBar');
     $('#summaryTabSideBar').addClass('chosenTabSideBar');
     $('#exploreTabSideBar').removeClass('chosenTabSideBar');
@@ -143,6 +144,7 @@ function showExploreTab() {
     $('#extrasSideBar').hide();
     $('#summarySideBar').hide();
     $('#exploreSideBar').show();
+
     $('#mainTabSideBar').removeClass('chosenTabSideBar');
     $('#summaryTabSideBar').removeClass('chosenTabSideBar');
     $('#exploreTabSideBar').addClass('chosenTabSideBar');
@@ -158,8 +160,14 @@ function getSummary() {
     for(let i = 0; i < $articleText.length; i++) {
         articleString += $articleText[i].innerText + "\n\n";
     }
-    alert(articleString);
-    console.log(articleString);
+    $.post(endpoints.main + endpoints.summary, {
+        article: articleString
+    }, (summary, status) => {
+        let $summary = document.createElement('p');
+        $summary.id = 'summaryTextSideBar';
+        $summary.innerText = summary;
+        $('#summarySideBar').append($summary);
+    });
 
 }
 
@@ -237,6 +245,7 @@ async function run() {
     createSideBar();
     await scrapeArticleParagraphs();
     getOnPageParagraphs();
+    getSummary();
 }
 
 run();

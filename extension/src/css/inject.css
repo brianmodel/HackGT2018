@@ -49,10 +49,15 @@ body {
 #summarySideBar {
     height: 100%;
     display: none;
+    overflow-y: auto;
+}
+#summaryTextSideBar {
+    line-height: 25px;
 }
 #exploreSideBar {
     height: 100%;
     display: none;
+    overflow-y: auto;
 }
 #definitionsSideBar {
     height: 40%;
@@ -80,6 +85,7 @@ body {
 
 }
 #extrasSideBar {
+    overflow-y: auto;
     padding-top: 20px;
     padding-bottom: 20px;
     height: 60%;
