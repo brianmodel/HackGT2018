@@ -20,7 +20,6 @@ def get_summary():
 @app.route('/keywords', methods = ['POST'])
 def get_keywords():
     '''
-
     :return: Json response of keywords, as well as what other features should be assocated with them
     example:
     {
