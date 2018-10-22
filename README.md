@@ -22,6 +22,6 @@ Enjoy a lightweight, universal chrome extension that operates on all news websit
 - BlackRock API
 - Microsoft Azure's text analysis API for Natural Language Processing (Keyword detection and Sentiment analysis)
 - Natural Language Toolkit (NLTK)
-- Python Flask framework
+- Python's Flask framework
 - Javascript
 - Docker
