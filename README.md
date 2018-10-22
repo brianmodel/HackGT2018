@@ -11,11 +11,11 @@ Enjoy a lightweight, universal chrome extension that operates on all news websit
 
 <u>Keyword detection and definition and Stock ticker detection, graphing and analysis</u>:
 
-![main](/Users/brianmodel/Desktop/HackGT2018/img/main.png)
+![main](/img/main.png)
 
 <u>Summary of article</u>:
 
-![main](/Users/brianmodel/Desktop/HackGT2018/img/summary.png)
+![main](/img/summary.png)
 
 # Tools
 
